@@ -1,4 +1,5 @@
 <?php
+use App\Channels;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,15 @@ Auth::routes();
 
 Route::get('/home','HomeController@index')->name('home');
 Route::resource('channels','ChannelsController');
+
+/*Route::get('add-media-to-library',function (){
+    Channels::create()->addMedia(storage_path('/'))->toMediaConllection();
+});*/
+
+
+Route::middleware(['auth'])->group(function(){
+    Route::resource('channels/{channel}/subscriptions','SubscriptionController')->only(['store','destroy']);
+    Route::get('channels/{channels}/videos','UploadVideoController@index')->name('channelUpload');
+    Route::post('channel/{channel}/videos','UploadVideoController@store');
+
+});

@@ -80,6 +80,17 @@
         <main class="py-4">
             @yield('content')
         </main>
+
     </div>
 </body>
 </html>
+<script>
+    window.AuthUser = '{!! auth()->user() !!} '
+    window.__auth = function () {
+        try{
+            return JSON.parse(AuthUser)
+        }catch(e){
+            return null;
+        }
+    }
+</script>

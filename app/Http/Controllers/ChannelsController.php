@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Channels;
+use App\Http\Requests\Channels\UpdateChannelRequest;
+use App\Models\Channels;
+use App\Models\Videos;
 use Illuminate\Http\Request;
 
 class ChannelsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth'])->only('update');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -55,16 +62,21 @@ class ChannelsController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(UpdateChannelRequest $request, Channels $channel)
     {
-        //
+        if($request->hasFile('image')){
+            //删除之前上传的所有图片
+            $channel->clearMediaCollection('image');
+            //上传图像并且入库
+            $channel->addMediaFromRequest('image')
+                ->toMediaCollection('image');
+        }
+        $channel->update([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+        return redirect()->back();
     }
 
     /**
@@ -77,4 +89,6 @@ class ChannelsController extends Controller
     {
         //
     }
+
+
 }
