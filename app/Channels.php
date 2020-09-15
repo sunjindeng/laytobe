@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Model;
+use App\Models\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;

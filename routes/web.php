@@ -28,6 +28,6 @@ Route::resource('channels','ChannelsController');
 Route::middleware(['auth'])->group(function(){
     Route::resource('channels/{channel}/subscriptions','SubscriptionController')->only(['store','destroy']);
     Route::get('channels/{channels}/videos','UploadVideoController@index')->name('channelUpload');
-    Route::post('channel/{channel}/videos','UploadVideoController@store');
+    Route::post('channel/{channels}/videos','UploadVideoController@store');
 
 });

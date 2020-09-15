@@ -50657,7 +50657,8 @@ Vue.component('channels-upload', {
   data: function data() {
     return {
       selected: false,
-      videos: []
+      videos: [],
+      progress: {}
     };
   },
   methods: {
@@ -50672,8 +50673,13 @@ Vue.component('channels-upload', {
         var form = new FormData();
         form.append('video', video);
         form.append('title', video.name);
-        form.append('channels_id', _this.channel.id);
-        return axios.post("/channel/".concat(_this.channel.id, "/videos"), form);
+        return axios.post("/channel/".concat(_this.channel.id, "/videos"), form, {
+          onUploadProgress: function onUploadProgress(event) {
+            _this.progress[video.name] = Math.ceil(event.loaded / event.total) * 100;
+
+            _this.$forceUpdate();
+          }
+        });
       });
     }
   }
@@ -50770,8 +50776,8 @@ Vue.component('subscription-button', {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /www/wwwroot/laryube/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /www/wwwroot/laryube/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /www/wwwroot/video/laytobe/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /www/wwwroot/video/laytobe/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

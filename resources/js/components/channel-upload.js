@@ -8,7 +8,8 @@ Vue.component('channels-upload',{
     },
     data:()=>({
         selected:false,
-        videos:[]
+        videos:[],
+        progress:{}
     }),
     methods:{
         upload(){
@@ -20,8 +21,12 @@ Vue.component('channels-upload',{
                 const form = new FormData();
                 form.append('video',video);
                 form.append('title',video.name);
-                form.append('channels_id',this.channel.id)
-                return axios.post(`/channel/${this.channel.id}/videos`,form)
+                return axios.post(`/channel/${this.channel.id}/videos`,form,{
+                    onUploadProgress:(event)=>{
+                        this.progress[video.name] = Math.ceil(event.loaded/event.total)*100
+                        this.$forceUpdate();
+                    }
+                })
             })
 
         }
